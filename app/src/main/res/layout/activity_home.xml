@@ -13,14 +13,13 @@
       android:orientation="horizontal"
       android:weightSum="12"
       android:divider="@drawable/divider"
-      android:paddingBottom="10dp"
       android:paddingTop="40dp"
       >
      <TextView
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
         android:text="Home"
-         android:textSize="25dp"
+         android:textSize="25sp"
          android:textStyle="bold"
          android:textColor="#000"
          android:layout_weight="11"
@@ -39,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#9A9A9A"
-        android:layout_marginBottom="10dp"
+
     />
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -52,17 +51,17 @@
             android:layout_height="match_parent">
 
         </ListView>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="122dp"
             android:layout_margin="16dp"
             android:src="@drawable/baseline_add_24"
+            app:backgroundTint="#05880B"
             app:layout_anchor="@id/postList"
             app:layout_anchorGravity="bottom|end"
-            app:backgroundTint="#05880B"
-            app:tint="@null"
-            />
+            app:tint="@null" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 <!--<ListView-->
@@ -83,15 +82,13 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#9A9A9A"
-        android:layout_marginBottom="10dp"
+
     />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#FCFCFC"
         android:gravity="center_vertical"
-        android:paddingTop="10dp"
-
 >
         <ImageView
             android:layout_width="wrap_content"

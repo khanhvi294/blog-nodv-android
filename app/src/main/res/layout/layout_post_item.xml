@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="Post title"
             android:textStyle="bold"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="#000"
             android:layout_weight="1"
             android:layout_marginRight="3dp"
@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="."
-            android:textSize="40dp"
+            android:textSize="40sp"
             android:layout_marginHorizontal="4dp"
             />
         <TextView
