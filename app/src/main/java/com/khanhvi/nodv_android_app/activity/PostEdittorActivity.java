@@ -1,14 +1,32 @@
 package com.khanhvi.nodv_android_app.activity;
 
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
+import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.khanhvi.nodv_android_app.R;
+import com.khanhvi.nodv_android_app.databinding.ActivityMainBinding;
 
 import jp.wasabeef.richeditor.RichEditor;
 
@@ -17,11 +35,29 @@ public class PostEdittorActivity extends AppCompatActivity {
     private RichEditor mEditor;
     private TextView mPreview;
 
+    String imagePath;
+
+    ActivityMainBinding binding;
+    StorageReference storageReference;
+    FirebaseStorage firebaseStorage;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_edittor);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+//        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_post_edittor);
+
         mEditor = (RichEditor) findViewById(R.id.editor);
+
+
+
+        setControl();
+
         mEditor.setEditorHeight(200);
         mEditor.setEditorFontSize(22);
         mEditor.setEditorFontColor(Color.RED);
@@ -31,7 +67,7 @@ public class PostEdittorActivity extends AppCompatActivity {
         mEditor.setPadding(10, 10, 10, 10);
         //mEditor.setBackground("https://raw.githubusercontent.com/wasabeef/art/master/chip.jpg");
         mEditor.setPlaceholder("Insert text here...");
-        //mEditor.setInputEnabled(false);
+       // mEditor.setInputEnabled(false);
 
         mPreview = (TextView) findViewById(R.id.preview);
         mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
@@ -218,7 +254,8 @@ public class PostEdittorActivity extends AppCompatActivity {
         findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mEditor.insertImage("https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1669649124294sky3.jpg?alt=media&token=7adf737d-3584-44cc-b7c8-b97fba819a95","dachshund", 320);
+//                mEditor.insertImage("https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1669649124294sky3.jpg?alt=media&token=7adf737d-3584-44cc-b7c8-b97fba819a95","dachshund", 320);
+                mEditor.insertImage(String.valueOf(R.drawable.avatar),"dachshund", 320);
             }
         });
 
@@ -255,5 +292,75 @@ public class PostEdittorActivity extends AppCompatActivity {
                 mEditor.insertTodo();
             }
         });
+        Button btnChoose = findViewById(R.id.btnChoose);
+        btnChoose.setOnClickListener(new View.OnClickListener() {
+        @Override
+         public void onClick(View view) {
+          Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+          startActivityForResult(intent,3);
+
+           }
+            }
+        );
     }
+
+
+
+    private String getPathFromUri(Context context, Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
+        if (cursor == null) {
+            return uri.getPath();
+        } else {
+            ((Cursor) cursor).moveToFirst();
+            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            String filePath = cursor.getString(columnIndex);
+            cursor.close();
+            return filePath;
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+
+        if(resultCode == RESULT_OK && data != null) {
+            Uri selectedImage = data.getData();
+//            ImageView imageView = findViewById(R.id.imgViewT);
+//            imageView.setImageURI(selectedImage);
+             imagePath = getPathFromUri(this,selectedImage);
+            storageReference = FirebaseStorage.getInstance().getReference().child("uploads").child(System.currentTimeMillis() + "." + getFileExtension(selectedImage));
+                storageReference.putFile(selectedImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                String url = uri.toString();
+mEditor.insertImage(url,"hihi",150,100);
+                            }
+                        });
+                    }
+                });
+        }
+    }
+
+
+    private String getFileExtension (Uri uri){
+        ContentResolver contentResolver = getContentResolver();
+
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+
+        return  mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+
+    private void setControl() {
+//        storageReference =  FirebaseStorage.getInstance().getReference().child("uploads").child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+//        firebaseStorage = FirebaseStorage.getInstance();
+    }
+
 }
