@@ -27,8 +27,12 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        setControl();
+        setEvent();
 
-        listview = (ListView) findViewById(R.id.postList);
+    }
+
+    private void setEvent() {
         postArr = new ArrayList<>();
 
         User user1 = new User("Khánh vi",R.drawable.avatar);
@@ -50,6 +54,15 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        Post newPost = (Post) getIntent().getSerializableExtra("newPost");
+        if(newPost!=null){
+        postArr.add(0,newPost);
+        postApdater.notifyDataSetChanged();}
+    }
+
+    private void setControl() {
+        listview = (ListView) findViewById(R.id.postList);
 
     }
 

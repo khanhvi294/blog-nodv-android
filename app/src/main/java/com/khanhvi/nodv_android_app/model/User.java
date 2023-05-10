@@ -1,11 +1,13 @@
 package com.khanhvi.nodv_android_app.model;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public class User {
+public class User implements Serializable {
     private String username;
     private int avatar;
 

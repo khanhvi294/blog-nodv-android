@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -49,6 +50,8 @@ public class PostEditorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_editor);
+//        setControl();
+        setEvent();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
 //        setContentView(binding.getRoot());
         setContentView(R.layout.activity_post_editor);
@@ -226,13 +229,27 @@ public class PostEditorActivity extends AppCompatActivity {
 
                 User user = new User("khanh vi",R.drawable.avatar);
                 Post newPost = new Post(title,content,thumbnail,user,5);
-                Intent resultIntent = new Intent(PostEditorActivity.this,PostDetailActivity.class);
+                Intent resultIntent = new Intent(getBaseContext(),PostDetailActivity.class);
                 resultIntent.putExtra("newPost", newPost);
                 startActivity(resultIntent);
             }
         });
     }
 
+    private void setEvent() {
+        ImageView closeEditor = findViewById(R.id.close);
+        closeEditor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PostEditorActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+//    private void setControl() {
+//
+//    }
 
 
     private String getPathFromUri(Context context, Uri uri) {

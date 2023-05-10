@@ -16,8 +16,8 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/back_icon"
-            android:id="@+id/back"
+            android:src="@drawable/close_icon"
+            android:id="@+id/closeDetail"
             android:layout_weight="1"
             android:scaleType="fitStart"
             />
@@ -49,6 +49,7 @@
         <com.mikhaellopez.circularimageview.CircularImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:paddingHorizontal="15dp"
             android:src="@drawable/avatar"
             android:id="@+id/avatarAuthor"
             />
@@ -109,7 +110,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="12dp"
+        >
         <TextView
             android:id="@+id/postTitle"
             android:layout_width="match_parent"
@@ -118,15 +121,13 @@
             android:textStyle="bold"
             android:textSize="25sp"
             android:textColor="#000"
-            android:padding="12dp"/>
+
+           />
         <jp.wasabeef.richeditor.RichEditor
             android:id="@+id/postContent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-<!--        <ImageView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:src="@drawable/avatar"/>-->
+            android:layout_height="wrap_content"
+           />
 
     </LinearLayout>
     <View
