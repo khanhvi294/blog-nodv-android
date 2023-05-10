@@ -1,65 +1,52 @@
 package com.khanhvi.nodv_android_app.model;
 
+import java.io.Serializable;
 import java.util.List;
-public class Post  extends Timestamp{
-    private String id;
+public class Post implements Serializable {
+//    private String id;
     private String title;
-    private String subtitle;
+//    private String subtitle;
     private String content;
-    private int thumbnail;
-    private String userId;
-    private Integer timeRead;
-    private Boolean isPublish;
+    private String thumbnail;
+    private User user;
+    private int timeRead;
+
 //    private List<String> userLikeIds;
 //    private List<Topic> topics;
 
-    public Post() {
-    }
-
-    public Post(String id, String title, String subtitle, String content, int thumbnail, String userId, Integer timeRead, Boolean isPublish) {
-        this.id = id;
+    public Post( String title,  String content, String thumbnail, User user, int timeRead){
         this.title = title;
-        this.subtitle = subtitle;
         this.content = content;
         this.thumbnail = thumbnail;
-        this.userId = userId;
+        this.user = user;
         this.timeRead = timeRead;
-        this.isPublish = isPublish;
 //        this.userLikeIds = userLikeIds;
 //        this.topics = topics;
     }
 
-    public String getId() {
-        return id;
-    }
+
 
     public String getTitle() {
         return title;
     }
 
-    public String getSubtitle() {
-        return subtitle;
-    }
 
     public String getContent() {
         return content;
     }
 
-    public int getThumbnail() {
+    public String getThumbnail() {
         return thumbnail;
     }
 
-    public String getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public Integer getTimeRead() {
+    public int getTimeRead() {
         return timeRead;
     }
 
-    public Boolean getPublish() {
-        return isPublish;
-    }
 
 //    public List<String> getUserLikeIds() {
 //        return userLikeIds;
@@ -69,37 +56,30 @@ public class Post  extends Timestamp{
 //        return topics;
 //    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+
 
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
-    }
 
     public void setContent(String content) {
         this.content = content;
     }
 
-    public void setThumbnail(int thumbnail) {
+    public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserId(User userId) {
+        this.user = user;
     }
 
-    public void setTimeRead(Integer timeRead) {
+    public void setTimeRead(int timeRead) {
         this.timeRead = timeRead;
     }
 
-    public void setPublish(Boolean publish) {
-        isPublish = publish;
-    }
+
 
 //    public void setUserLikeIds(List<String> userLikeIds) {
 //        this.userLikeIds = userLikeIds;

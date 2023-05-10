@@ -16,7 +16,7 @@
             android:name=".activity.PostDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.PostEdittorActivity"
+            android:name=".activity.PostEditorActivity"
             android:exported="false" />
         <activity
             android:name=".activity.HomeActivity"

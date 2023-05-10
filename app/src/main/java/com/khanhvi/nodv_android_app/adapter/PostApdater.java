@@ -53,7 +53,7 @@ public class PostApdater extends BaseAdapter {
             TextView timeRead = convertView.findViewById(R.id.timeRead);
         System.out.println("testttt"+postList.get(position).getTitle());
             editTitle.setText(postList.get(position).getTitle());
-            imgPost.setImageResource(postList.get(position).getThumbnail());
+//            imgPost.setImageResource(postList.get(position).getThumbnail());
 
 
 

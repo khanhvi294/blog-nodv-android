@@ -2,6 +2,7 @@ package com.khanhvi.nodv_android_app.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.khanhvi.nodv_android_app.R;
 import com.khanhvi.nodv_android_app.adapter.PostApdater;
 import com.khanhvi.nodv_android_app.model.Post;
+import com.khanhvi.nodv_android_app.model.User;
 
 import java.util.ArrayList;
 
@@ -29,11 +31,13 @@ public class HomeActivity extends AppCompatActivity {
         listview = (ListView) findViewById(R.id.postList);
         postArr = new ArrayList<>();
 
-        postArr.add(new Post("1","khanh vi","not","1223333",R.drawable.avatar,"1",2,true));
-        postArr.add(new Post("1","khanh vi","not","1223333",R.drawable.avatar,"1",2,true));
-        postArr.add(new Post("1","khanh vi","not","1223333",R.drawable.avatar,"1",2,true));
-        postArr.add(new Post("1","khanh vi","not","1223333",R.drawable.avatar,"1",2,true));
-        postArr.add(new Post("1","khanh vi","not","1223333",R.drawable.avatar,"1",2,true));
+        User user1 = new User("Khánh vi",R.drawable.avatar);
+        User user2 = new User("vi vi", R.drawable.avatar);
+        postArr.add(new Post("khanh vi","not","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user1,2));
+        postArr.add(new Post("khanh vi","not","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user2,2));
+        postArr.add(new Post("khanh vi","not","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user1,2));
+        postArr.add(new Post("khanh vi","not","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user2,2));
+        postArr.add(new Post("khanh vi","not","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user1,2));
 
         postApdater = new PostApdater(this,R.layout.layout_post_item,postArr);
         listview.setAdapter(postApdater);
@@ -41,9 +45,12 @@ public class HomeActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent i = new Intent(HomeActivity.this,PostEdittorActivity.class);
+                Intent i = new Intent(HomeActivity.this,PostEditorActivity.class);
+                startActivityForResult(i, 5);
                 startActivity(i);
             }
         });
+
     }
+
 }

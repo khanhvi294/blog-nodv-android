@@ -1,6 +1,8 @@
 package com.khanhvi.nodv_android_app.activity;
 
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,13 +13,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.webkit.MimeTypeMap;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,15 +26,17 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.khanhvi.nodv_android_app.R;
 import com.khanhvi.nodv_android_app.databinding.ActivityMainBinding;
+import com.khanhvi.nodv_android_app.model.Post;
+import com.khanhvi.nodv_android_app.model.User;
 
 import jp.wasabeef.richeditor.RichEditor;
 
-public class PostEdittorActivity extends AppCompatActivity {
+public class PostEditorActivity extends AppCompatActivity {
 
     private RichEditor mEditor;
-    private TextView mPreview;
 
-    String imagePath;
+
+    String urlImage;
 
     ActivityMainBinding binding;
     StorageReference storageReference;
@@ -47,33 +48,27 @@ public class PostEdittorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_edittor);
+        setContentView(R.layout.activity_post_editor);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
 //        setContentView(binding.getRoot());
-        setContentView(R.layout.activity_post_edittor);
+        setContentView(R.layout.activity_post_editor);
 
         mEditor = (RichEditor) findViewById(R.id.editor);
-
-
-
-        setControl();
-
         mEditor.setEditorHeight(200);
         mEditor.setEditorFontSize(22);
-        mEditor.setEditorFontColor(Color.RED);
+        mEditor.setEditorFontColor(Color.BLACK);
         //mEditor.setEditorBackgroundColor(Color.BLUE);
-        //mEditor.setBackgroundColor(Color.BLUE);
+//        mEditor.setBackgroundColor(Color.BLUE);
         //mEditor.setBackgroundResource(R.drawable.bg);
         mEditor.setPadding(10, 10, 10, 10);
         //mEditor.setBackground("https://raw.githubusercontent.com/wasabeef/art/master/chip.jpg");
-        mEditor.setPlaceholder("Insert text here...");
+        mEditor.setPlaceholder("Write something...");
        // mEditor.setInputEnabled(false);
 
-        mPreview = (TextView) findViewById(R.id.preview);
         mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
             @Override
             public void onTextChange(String text) {
-                mPreview.setText(text);
+
             }
         });
 
@@ -102,34 +97,6 @@ public class PostEdittorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mEditor.setItalic();
-            }
-        });
-
-        findViewById(R.id.action_subscript).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setSubscript();
-            }
-        });
-
-        findViewById(R.id.action_superscript).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setSuperscript();
-            }
-        });
-
-        findViewById(R.id.action_strikethrough).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setStrikeThrough();
-            }
-        });
-
-        findViewById(R.id.action_underline).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setUnderline();
             }
         });
 
@@ -175,25 +142,6 @@ public class PostEdittorActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.action_txt_color).setOnClickListener(new View.OnClickListener() {
-            private boolean isChanged;
-
-            @Override
-            public void onClick(View v) {
-                mEditor.setTextColor(isChanged ? Color.BLACK : Color.RED);
-                isChanged = !isChanged;
-            }
-        });
-
-        findViewById(R.id.action_bg_color).setOnClickListener(new View.OnClickListener() {
-            private boolean isChanged;
-
-            @Override
-            public void onClick(View v) {
-                mEditor.setTextBackgroundColor(isChanged ? Color.TRANSPARENT : Color.YELLOW);
-                isChanged = !isChanged;
-            }
-        });
 
         findViewById(R.id.action_indent).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,12 +178,7 @@ public class PostEdittorActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.action_blockquote).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setBlockquote();
-            }
-        });
+
 
         findViewById(R.id.action_insert_bullets).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,54 +197,40 @@ public class PostEdittorActivity extends AppCompatActivity {
         findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mEditor.insertImage("https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1669649124294sky3.jpg?alt=media&token=7adf737d-3584-44cc-b7c8-b97fba819a95","dachshund", 320);
-                mEditor.insertImage(String.valueOf(R.drawable.avatar),"dachshund", 320);
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent,3);
             }
         });
 
-        findViewById(R.id.action_insert_youtube).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.insertYoutubeVideo("https://raw.githubusercontent.com/ntrungduc228/spring-ecommerce-microservices/master/architecture.png?fbclid=IwAR0Mb7orP65KfguZIijNjryYLyXedTEsNTblubCwqK8mMzf3F5x1cprsL6o");
-            }
-        });
-
-        findViewById(R.id.action_insert_audio).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.insertAudio("https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_5MG.mp3");
-            }
-        });
-
-        findViewById(R.id.action_insert_video).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.insertVideo("https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_10MB.mp4", 360);
-            }
-        });
-
-        findViewById(R.id.action_insert_link).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.insertLink("https://github.com/wasabeef", "wasabeef");
-            }
-        });
         findViewById(R.id.action_insert_checkbox).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mEditor.insertTodo();
             }
         });
-        Button btnChoose = findViewById(R.id.btnChoose);
-        btnChoose.setOnClickListener(new View.OnClickListener() {
-        @Override
-         public void onClick(View view) {
-          Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-          startActivityForResult(intent,3);
+        findViewById(R.id.publish).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               String inputString= mEditor.getHtml();
 
-           }
+                String[] lines = inputString.split("<br>",2);
+
+                String title = lines[0];
+                String content = lines[1];
+                String thumbnail;
+                if (urlImage == null) {
+                    thumbnail = "https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1671427078388the-ky-1.jpg?alt=media&token=bb2c88cc-a368-4d28-9735-fe788f6bef6d";  }
+                else {
+                    thumbnail = "https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba";
+                }
+
+                User user = new User("khanh vi",R.drawable.avatar);
+                Post newPost = new Post(title,content,thumbnail,user,5);
+                Intent resultIntent = new Intent(PostEditorActivity.this,PostDetailActivity.class);
+                resultIntent.putExtra("newPost", newPost);
+                startActivity(resultIntent);
             }
-        );
+        });
     }
 
 
@@ -321,6 +250,7 @@ public class PostEdittorActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("SuspiciousIndentation")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -331,7 +261,7 @@ public class PostEdittorActivity extends AppCompatActivity {
             Uri selectedImage = data.getData();
 //            ImageView imageView = findViewById(R.id.imgViewT);
 //            imageView.setImageURI(selectedImage);
-             imagePath = getPathFromUri(this,selectedImage);
+            String imagePath = getPathFromUri(this,selectedImage);
             storageReference = FirebaseStorage.getInstance().getReference().child("uploads").child(System.currentTimeMillis() + "." + getFileExtension(selectedImage));
                 storageReference.putFile(selectedImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -358,9 +288,6 @@ mEditor.insertImage(url,"hihi",150,100);
     }
 
 
-    private void setControl() {
-//        storageReference =  FirebaseStorage.getInstance().getReference().child("uploads").child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
-//        firebaseStorage = FirebaseStorage.getInstance();
-    }
+
 
 }
