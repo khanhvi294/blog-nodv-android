@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingBottom="15dp"
+    android:id="@+id/postItem"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
    <LinearLayout
@@ -11,6 +12,7 @@
        android:layout_height="wrap_content"
        android:gravity="center_vertical"
        android:paddingHorizontal="9dp"
+       android:paddingTop="5dp"
        >
        <com.mikhaellopez.circularimageview.CircularImageView
            android:layout_width="50dp"

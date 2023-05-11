@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,20 +44,42 @@ public class PostEditorActivity extends AppCompatActivity {
     StorageReference storageReference;
     FirebaseStorage firebaseStorage;
 
+    ImageView action_undo,
+            action_redo,
+            action_bold,
+            action_italic,
+            action_heading1,
+            action_heading2,
+            action_heading3,
+            action_heading4,
+            action_heading5,
+            action_heading6,
+            action_indent,
+            action_outdent,
+            action_align_left,
+            action_align_center,
+            action_align_right,
+            action_insert_bullets,
+            action_insert_numbers,
+            action_insert_image,
+            action_insert_checkbox,
+            closeEditor;
 
-
-
+Button publish;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_editor);
-//        setControl();
-        setEvent();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-//        setContentView(binding.getRoot());
-        setContentView(R.layout.activity_post_editor);
 
-        mEditor = (RichEditor) findViewById(R.id.editor);
+        setControl();
+        setEvent();
+
+
+
+    }
+
+    private void setEvent() {
         mEditor.setEditorHeight(200);
         mEditor.setEditorFontSize(22);
         mEditor.setEditorFontColor(Color.BLACK);
@@ -66,7 +89,7 @@ public class PostEditorActivity extends AppCompatActivity {
         mEditor.setPadding(10, 10, 10, 10);
         //mEditor.setBackground("https://raw.githubusercontent.com/wasabeef/art/master/chip.jpg");
         mEditor.setPlaceholder("Write something...");
-       // mEditor.setInputEnabled(false);
+        // mEditor.setInputEnabled(false);
 
         mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
             @Override
@@ -75,169 +98,6 @@ public class PostEditorActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.action_undo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.undo();
-            }
-        });
-
-        findViewById(R.id.action_redo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.redo();
-            }
-        });
-
-        findViewById(R.id.action_bold).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setBold();
-            }
-        });
-
-        findViewById(R.id.action_italic).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setItalic();
-            }
-        });
-
-        findViewById(R.id.action_heading1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setHeading(1);
-            }
-        });
-
-        findViewById(R.id.action_heading2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setHeading(2);
-            }
-        });
-
-        findViewById(R.id.action_heading3).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setHeading(3);
-            }
-        });
-
-        findViewById(R.id.action_heading4).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setHeading(4);
-            }
-        });
-
-        findViewById(R.id.action_heading5).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setHeading(5);
-            }
-        });
-
-        findViewById(R.id.action_heading6).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setHeading(6);
-            }
-        });
-
-
-        findViewById(R.id.action_indent).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setIndent();
-            }
-        });
-
-        findViewById(R.id.action_outdent).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setOutdent();
-            }
-        });
-
-        findViewById(R.id.action_align_left).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setAlignLeft();
-            }
-        });
-
-        findViewById(R.id.action_align_center).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setAlignCenter();
-            }
-        });
-
-        findViewById(R.id.action_align_right).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setAlignRight();
-            }
-        });
-
-
-
-        findViewById(R.id.action_insert_bullets).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setBullets();
-            }
-        });
-
-        findViewById(R.id.action_insert_numbers).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setNumbers();
-            }
-        });
-
-        findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent,3);
-            }
-        });
-
-        findViewById(R.id.action_insert_checkbox).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.insertTodo();
-            }
-        });
-        findViewById(R.id.publish).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               String inputString= mEditor.getHtml();
-
-                String[] lines = inputString.split("<br>",2);
-
-                String title = lines[0];
-                String content = lines[1];
-                String thumbnail;
-                if (urlImage == null) {
-                    thumbnail = "https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1671427078388the-ky-1.jpg?alt=media&token=bb2c88cc-a368-4d28-9735-fe788f6bef6d";  }
-                else {
-                    thumbnail = "https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba";
-                }
-
-                User user = new User("khanh vi",R.drawable.avatar);
-                Post newPost = new Post(title,content,thumbnail,user,5);
-                Intent resultIntent = new Intent(getBaseContext(),PostDetailActivity.class);
-                resultIntent.putExtra("newPost", newPost);
-                startActivity(resultIntent);
-            }
-        });
-    }
-
-    private void setEvent() {
-        ImageView closeEditor = findViewById(R.id.close);
         closeEditor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -245,11 +105,195 @@ public class PostEditorActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        action_undo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditor.undo();
+            }
+        });
+
+        action_redo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditor.redo();
+            }
+        });
+
+        action_bold.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditor.setBold();
+            }
+        });
+
+        action_italic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditor.setItalic();
+            }
+        });
+
+        action_heading1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditor.setHeading(1);
+            }
+        });
+
+        action_heading2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditor.setHeading(2);
+            }
+        });
+
+        action_heading3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditor.setHeading(3);
+            }
+        });
+
+        action_heading4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditor.setHeading(4);
+            }
+        });
+
+        action_heading5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditor.setHeading(5);
+            }
+        });
+
+        action_heading6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditor.setHeading(6);
+            }
+        });
+
+
+        action_indent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditor.setIndent();
+            }
+        });
+
+        action_outdent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditor.setOutdent();
+            }
+        });
+
+        action_align_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditor.setAlignLeft();
+            }
+        });
+
+        action_align_center.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditor.setAlignCenter();
+            }
+        });
+
+        action_align_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditor.setAlignRight();
+            }
+        });
+
+        action_insert_bullets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditor.setBullets();
+            }
+        });
+
+        action_insert_numbers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditor.setNumbers();
+            }
+        });
+
+        action_insert_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 3);
+            }
+        });
+
+        action_insert_checkbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditor.insertTodo();
+            }
+        });
+        publish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String inputString = mEditor.getHtml();
+
+                String[] lines = inputString.split("<br>", 2);
+
+                String title = lines[0];
+                String content = lines[1];
+                String thumbnail;
+                if (urlImage == null) {
+                    thumbnail = "https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1671427078388the-ky-1.jpg?alt=media&token=bb2c88cc-a368-4d28-9735-fe788f6bef6d";
+                } else {
+                    thumbnail = "https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba";
+                }
+
+                User user = new User("khanh vi", R.drawable.avatar);
+                Post newPost = new Post(title, content, thumbnail, user, 5);
+                Data data = new Data();
+                data.addToPostList(getBaseContext() ,newPost);
+                Intent resultIntent = new Intent(getBaseContext(), PostDetailActivity.class);
+                resultIntent.putExtra("newPost",newPost);
+                startActivity(resultIntent);
+            }
+        });
     }
 
-//    private void setControl() {
-//
-//    }
+    private void setControl() {
+        publish = findViewById(R.id.publish);
+        closeEditor = findViewById(R.id.close);
+
+        mEditor = (RichEditor) findViewById(R.id.editor);
+        action_undo = findViewById(R.id.action_undo);
+        action_redo = findViewById(R.id.action_redo);
+        action_bold = findViewById(R.id.action_bold);
+        action_italic = findViewById(R.id.action_italic);
+        action_heading1 = findViewById(R.id.action_heading1);
+        action_heading2 = findViewById(R.id.action_heading2);
+        action_heading3 = findViewById(R.id.action_heading3);
+        action_heading4 = findViewById(R.id.action_heading4);
+        action_heading5 = findViewById(R.id.action_heading5);
+        action_heading6 = findViewById(R.id.action_heading6);
+        action_indent = findViewById(R.id.action_indent);
+        action_outdent = findViewById(R.id.action_outdent);
+        action_align_left = findViewById(R.id.action_align_left);
+        action_align_center = findViewById(R.id.action_align_center);
+        action_align_right = findViewById(R.id.action_align_right);
+        action_insert_bullets = findViewById(R.id.action_insert_bullets);
+        action_insert_numbers = findViewById(R.id.action_insert_numbers);
+        action_insert_image = findViewById(R.id.action_insert_image);
+        action_insert_checkbox = findViewById(R.id.action_insert_checkbox);
+
+
+    }
 
 
     private String getPathFromUri(Context context, Uri uri) {
@@ -273,38 +317,35 @@ public class PostEditorActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
 
-
-        if(resultCode == RESULT_OK && data != null) {
+        if (resultCode == RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
 //            ImageView imageView = findViewById(R.id.imgViewT);
 //            imageView.setImageURI(selectedImage);
-            String imagePath = getPathFromUri(this,selectedImage);
+            String imagePath = getPathFromUri(this, selectedImage);
             storageReference = FirebaseStorage.getInstance().getReference().child("uploads").child(System.currentTimeMillis() + "." + getFileExtension(selectedImage));
-                storageReference.putFile(selectedImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                String url = uri.toString();
-mEditor.insertImage(url,"hihi",150,100);
-                            }
-                        });
-                    }
-                });
+            storageReference.putFile(selectedImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String url = uri.toString();
+                            mEditor.insertImage(url, "hihi", 150, 100);
+                        }
+                    });
+                }
+            });
         }
     }
 
 
-    private String getFileExtension (Uri uri){
+    private String getFileExtension(Uri uri) {
         ContentResolver contentResolver = getContentResolver();
 
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
 
-        return  mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
-
-
 
 
 }

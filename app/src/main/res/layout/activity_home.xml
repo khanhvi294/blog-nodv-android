@@ -57,7 +57,7 @@
         </ListView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/fabCreate"
             android:layout_width="wrap_content"
             android:layout_height="122dp"
             android:layout_margin="16dp"
@@ -68,20 +68,7 @@
             app:tint="@null" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-<!--<ListView-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="0dp"-->
-<!--    android:layout_weight="1"-->
-<!--    android:id="@+id/postList"/>-->
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:id="@+id/fab"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="end|bottom"-->
-<!--        android:src="@drawable/add_icon"-->
-<!--        android:layout_margin="16dp"-->
 
-<!--        />-->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
