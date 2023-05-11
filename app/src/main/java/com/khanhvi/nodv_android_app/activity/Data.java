@@ -52,4 +52,14 @@ public class Data {
         editor.commit();
     }
 
+    public void removePostList(Context context, int viTri) {
+        postArr = getPostList(context);
+        postArr.remove(viTri);
+        Gson gson = new Gson();
+        String json;
+        editor = preferences.edit();
+        json = gson.toJson(postArr);
+        editor.putString("postArr", json);
+        editor.commit();
+    }
 }

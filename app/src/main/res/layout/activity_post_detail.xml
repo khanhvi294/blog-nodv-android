@@ -32,7 +32,6 @@
             android:layout_height="wrap_content"
             android:src="@drawable/more_icon"
             android:id="@+id/menuMore"
-
             android:layout_gravity="end"/>
     </LinearLayout>
     <View

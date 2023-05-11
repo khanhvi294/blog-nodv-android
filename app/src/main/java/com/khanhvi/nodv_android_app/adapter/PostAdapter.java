@@ -28,6 +28,8 @@ public class PostAdapter extends ArrayAdapter {
     int resource;
     List<Post> postList;
 
+
+
     public PostAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Post> objects) {
         super(context, resource, objects);
         this.context = context;
@@ -58,9 +60,12 @@ public class PostAdapter extends ArrayAdapter {
             public void onClick(View view) {
                 Intent intent = new Intent(context, PostDetailActivity.class);
                 intent.putExtra("newPost", post);
+                intent.putExtra("viTri",position);
                 context.startActivity(intent);
             }
         });
+
+
 
         return convertView;
     }

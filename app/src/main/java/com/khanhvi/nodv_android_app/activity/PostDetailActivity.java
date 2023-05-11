@@ -7,8 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -31,6 +35,11 @@ public class PostDetailActivity extends AppCompatActivity {
     SharedPreferences preferences;
     ImageView closeDetail;
     ArrayList<Post> postArr;
+    Data data = new Data();
+    Post post;
+    int viTri;
+
+    ImageView menuMore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +53,9 @@ public class PostDetailActivity extends AppCompatActivity {
         richEditor = findViewById(R.id.postContent);
         postTitle = findViewById(R.id.postTitle);
         closeDetail = findViewById(R.id.closeDetail);
+        post = (Post) getIntent().getSerializableExtra("newPost");
+        viTri = getIntent().getIntExtra("viTri",-1);
+        menuMore = findViewById(R.id.menuMore);
     }
 
     private void setEvent() {
@@ -60,15 +72,11 @@ public class PostDetailActivity extends AppCompatActivity {
 //        postArr = new ArrayList<>();
 
 //here you get your list
-//        postArr = gson.fromJson(json, type);
-        System.out.println("POst " + postArr.get(0).getTitle());
 
 
-        Post newPost = (Post) getIntent().getSerializableExtra("newPost");
-        System.out.println("newwwww "+newPost);
         richEditor.setInputEnabled(false);
-        richEditor.setHtml(newPost.getContent());
-        postTitle.setText(newPost.getTitle());
+        richEditor.setHtml(post.getContent());
+        postTitle.setText(post.getTitle());
         closeDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +84,43 @@ public class PostDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        menuMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMenu(menuMore);
+            }
+        });
     }
 
+//    public void showPopup(View v) {
+//        PopupMenu popup = new PopupMenu(this, v);
+//        MenuInflater inflater = popup.getMenuInflater();
+//        inflater.inflate(R.menu.menu, popup.getMenu());
+//        popup.show();
+//    }
+    public void showMenu(View v) {
+        PopupMenu popup = new PopupMenu(this,v);
+
+        // This activity implements OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.menu_item_edit:
+
+                        return true;
+                    case R.id.menu_item_delete:
+                        data.removePostList(getBaseContext(),viTri);
+                        Intent intent = new Intent(PostDetailActivity.this,HomeActivity.class);
+                        startActivity(intent);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popup.inflate(R.menu.menu);
+        popup.show();
+    }
 
 }

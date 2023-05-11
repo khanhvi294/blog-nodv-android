@@ -7,8 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,9 +31,13 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     ListView listview;
+    int vitri = -1;
     PostAdapter postAdapter;
     ArrayList<Post> postArr;
     FloatingActionButton fabCreate;
+
+    ImageView deletePost;
+    Data data = new Data();
 
     SharedPreferences preferences; //Create Object of SharedPreferences
     SharedPreferences.Editor editor;
@@ -54,6 +62,7 @@ public class HomeActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
                 Intent i = new Intent(HomeActivity.this,PostDetailActivity.class);
                 startActivity(i);
             }
@@ -73,6 +82,8 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
     }
 
     private void getPosts() {
@@ -88,6 +99,7 @@ public class HomeActivity extends AppCompatActivity {
     private void setControl() {
         listview = (ListView) findViewById(R.id.postList);
         fabCreate = findViewById(R.id.fabCreate);
+        deletePost = findViewById(R.id.deletePost);
     }
 
 
