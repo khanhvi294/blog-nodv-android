@@ -3,7 +3,9 @@ package com.khanhvi.nodv_android_app.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.khanhvi.nodv_android_app.MainActivity;
 import com.khanhvi.nodv_android_app.R;
+import com.khanhvi.nodv_android_app.adapter.PostAdapter;
 import com.khanhvi.nodv_android_app.model.Post;
 
 import java.lang.reflect.Array;
@@ -32,12 +35,14 @@ public class PostDetailActivity extends AppCompatActivity {
     RichEditor richEditor;
     TextView postTitle;
 
+
     SharedPreferences preferences;
     ImageView closeDetail;
     ArrayList<Post> postArr;
     Data data = new Data();
     Post post;
     int viTri;
+    PostAdapter postAdapter;
 
     ImageView menuMore;
 
@@ -61,18 +66,6 @@ public class PostDetailActivity extends AppCompatActivity {
     private void setEvent() {
         Data data = new Data();
     postArr = data.getPostList(getBaseContext());
-        System.out.println(postArr);
-//                preferences = getSharedPreferences("postArr", Context.MODE_PRIVATE);
-//        String json = preferences.getString("postArr", "");
-//
-//        Gson gson = new Gson();
-//
-//        Type type = new TypeToken<List<Post>>() {}.getType();
-//
-//        postArr = new ArrayList<>();
-
-//here you get your list
-
 
         richEditor.setInputEnabled(false);
         richEditor.setHtml(post.getContent());
@@ -92,16 +85,9 @@ public class PostDetailActivity extends AppCompatActivity {
         });
     }
 
-//    public void showPopup(View v) {
-//        PopupMenu popup = new PopupMenu(this, v);
-//        MenuInflater inflater = popup.getMenuInflater();
-//        inflater.inflate(R.menu.menu, popup.getMenu());
-//        popup.show();
-//    }
     public void showMenu(View v) {
         PopupMenu popup = new PopupMenu(this,v);
 
-        // This activity implements OnMenuItemClickListener
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -110,9 +96,26 @@ public class PostDetailActivity extends AppCompatActivity {
 
                         return true;
                     case R.id.menu_item_delete:
-                        data.removePostList(getBaseContext(),viTri);
-                        Intent intent = new Intent(PostDetailActivity.this,HomeActivity.class);
-                        startActivity(intent);
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(PostDetailActivity.this);
+                        dialog.setTitle("Confirm");
+                        dialog.setMessage("Are you sure delete post?");
+                        dialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                data.removePostList(getBaseContext(),viTri);
+                                Intent intent = new Intent(PostDetailActivity.this,HomeActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        AlertDialog alertDialog = dialog.create();
+                        alertDialog.show();
                         return true;
                     default:
                         return false;

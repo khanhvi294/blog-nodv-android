@@ -31,13 +31,10 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     ListView listview;
-    int vitri = -1;
     PostAdapter postAdapter;
     ArrayList<Post> postArr;
     FloatingActionButton fabCreate;
 
-    ImageView deletePost;
-    Data data = new Data();
 
     SharedPreferences preferences; //Create Object of SharedPreferences
     SharedPreferences.Editor editor;
@@ -48,6 +45,11 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         setControl();
         setEvent();
+    }
+    private void setControl() {
+        listview = (ListView) findViewById(R.id.postList);
+        fabCreate = findViewById(R.id.fabCreate);
+
     }
 
     private void setEvent() {
@@ -96,11 +98,7 @@ public class HomeActivity extends AppCompatActivity {
         postArr = gson.fromJson(json, type);
     }
 
-    private void setControl() {
-        listview = (ListView) findViewById(R.id.postList);
-        fabCreate = findViewById(R.id.fabCreate);
-        deletePost = findViewById(R.id.deletePost);
-    }
+
 
 
 
