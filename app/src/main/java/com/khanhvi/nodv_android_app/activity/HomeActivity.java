@@ -36,9 +36,7 @@ public class HomeActivity extends AppCompatActivity {
     FloatingActionButton fabCreate;
     Data data;
 
-    SharedPreferences preferences; //Create Object of SharedPreferences
-    SharedPreferences.Editor editor;
-    Context context;
+    SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +55,6 @@ public class HomeActivity extends AppCompatActivity {
 
         preferences = getSharedPreferences("postArr", Context.MODE_PRIVATE);
         getPosts();
-//        postArr = data.getPostList(getBaseContext());
 
         postAdapter = new PostAdapter(this,R.layout.layout_post_item,postArr);
         listview.setAdapter(postAdapter);
@@ -86,8 +83,6 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
 
     private void getPosts() {
@@ -96,12 +91,7 @@ public class HomeActivity extends AppCompatActivity {
         Type type = new TypeToken<List<Post>>() {}.getType();
 
         postArr = new ArrayList<>();
-//here you get your list
         postArr = gson.fromJson(json, type);
     }
-
-
-
-
 
 }

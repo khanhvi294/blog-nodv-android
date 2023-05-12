@@ -48,7 +48,6 @@
         <com.mikhaellopez.circularimageview.CircularImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:paddingHorizontal="15dp"
             android:src="@drawable/avatar"
             android:id="@+id/avatarAuthor"
             />
@@ -122,11 +121,11 @@
             android:textColor="#000"
 
            />
-        <jp.wasabeef.richeditor.RichEditor
-            android:id="@+id/postContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-           />
+<!--        <jp.wasabeef.richeditor.RichEditor-->
+<!--            android:id="@+id/postContent"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--           />-->
 
     </LinearLayout>
     <View
@@ -162,6 +161,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/account_icon"
             android:layout_weight="1"/>
+
 
     </LinearLayout>
 

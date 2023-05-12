@@ -8,12 +8,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class User implements Serializable {
+    private int id;
     private String username;
     private int avatar;
 
-    public User(String username, int avatar) {
+    public User(int id, String username, int avatar) {
+        this.id = id;
         this.username = username;
         this.avatar = avatar;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getUsername() {
@@ -22,6 +28,10 @@ public class User implements Serializable {
 
     public int getAvatar() {
         return avatar;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setUsername(String username) {

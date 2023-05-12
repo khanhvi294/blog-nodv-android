@@ -19,12 +19,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
 import com.khanhvi.nodv_android_app.R;
 import com.khanhvi.nodv_android_app.activity.Data;
 import com.khanhvi.nodv_android_app.activity.HomeActivity;
 import com.khanhvi.nodv_android_app.activity.PostDetailActivity;
 import com.khanhvi.nodv_android_app.activity.PostEditorActivity;
 import com.khanhvi.nodv_android_app.model.Post;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,8 +62,13 @@ public class PostAdapter extends ArrayAdapter {
 
         Post post = postList.get(position);
         viewHolder.txtPostTitle.setText(post.getTitle());
-        viewHolder.imgPost.setImageURI(Uri.parse(post.getThumbnail()));
+        System.out.println("podyt " + post.getThumbnail());
+//        viewHolder.imgPost.setImageURI(Uri.parse(post.getThumbnail()));
+        Glide.with(context).load(post.getThumbnail()).into(viewHolder.imgPost);
+
+//        Picasso.get();
         viewHolder.txtAuthor.setText(post.getUser().getUsername());
+
 
         viewHolder.postItem.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.khanhvi.nodv_android_app.activity.Data;
 import com.khanhvi.nodv_android_app.activity.HomeActivity;
 import com.khanhvi.nodv_android_app.model.Post;
 import com.khanhvi.nodv_android_app.model.User;
@@ -31,22 +32,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-//        postArr = new ArrayList<>();
-//
-//        User user1 = new User("Khánh vi",R.drawable.avatar);
-//        User user2 = new User("vi vi", R.drawable.avatar);
-//        postArr.add(new Post("khanh vi 1","not1","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user1,2));
-//        postArr.add(new Post("khanh vi 2","not 2","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user2,2));
-//        postArr.add(new Post("khanh vi 3","not 3","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user1,2));
-//        postArr.add(new Post("khanh vi 4","not 4","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user2,2));
-//        postArr.add(new Post("khanh vi 5","not 5","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user1,2));
-//
-//        Gson gson = new Gson();
-//        preferences = getSharedPreferences("postArr", Context.MODE_PRIVATE);
-//        editor = preferences.edit();
-//        String json = gson.toJson(postArr);
-//        editor.putString("postArr", json);
-//        editor.commit();
+        postArr = new ArrayList<>();
+
+        Data data = new Data();
+        User user1 = data.getCurrentUser(getBaseContext());
+        User user2 = new User(2,"vi vi", R.drawable.avatar);
+        postArr.add(new Post("post title 1","not 1<br> <img src=\"https://firebasestorage.googleapis.com/v0/b/nodv-android.appspot.com/o/uploads%2F1683904745202.jpg?alt=media&amp;token=57b9f56d-c007-4a4f-a599-695de8782ff5\" alt=\"hihi\" width=\"150\" height=\"100\"><br>","https://firebasestorage.googleapis.com/v0/b/nodv-android.appspot.com/o/uploads%2F1683904745202.jpg?alt=media&amp;token=57b9f56d-c007-4a4f-a599-695de8782ff5",user1,2));
+        postArr.add(new Post("post title 2","not 2 <br> <img src=\"https://firebasestorage.googleapis.com/v0/b/nodv-android.appspot.com/o/uploads%2F1683904745202.jpg?alt=media&amp;token=57b9f56d-c007-4a4f-a599-695de8782ff5\" alt=\"hihi\" width=\"150\" height=\"100\"><br>","https://firebasestorage.googleapis.com/v0/b/nodv-android.appspot.com/o/uploads%2F1683904745202.jpg?alt=media&amp;token=57b9f56d-c007-4a4f-a599-695de8782ff5",user1,2));
+        postArr.add(new Post("post title 3","not 3<br> <img src=\"https://firebasestorage.googleapis.com/v0/b/nodv-android.appspot.com/o/uploads%2F1683904745202.jpg?alt=media&amp;token=57b9f56d-c007-4a4f-a599-695de8782ff5\" alt=\"hihi\" width=\"150\" height=\"100\"><br>","https://firebasestorage.googleapis.com/v0/b/nodv-android.appspot.com/o/uploads%2F1683904745202.jpg?alt=media&amp;token=57b9f56d-c007-4a4f-a599-695de8782ff5",user2,2));
+        postArr.add(new Post("post title 4","not 4 <br> <img src=\"https://firebasestorage.googleapis.com/v0/b/nodv-android.appspot.com/o/uploads%2F1683904745202.jpg?alt=media&amp;token=57b9f56d-c007-4a4f-a599-695de8782ff5\" alt=\"hihi\" width=\"150\" height=\"100\"><br>","https://firebasestorage.googleapis.com/v0/b/nodv-android.appspot.com/o/uploads%2F1683904745202.jpg?alt=media&amp;token=57b9f56d-c007-4a4f-a599-695de8782ff5",user2,2));
+        postArr.add(new Post("post title 5","not 5 <br> <img src=\"https://firebasestorage.googleapis.com/v0/b/nodv-android.appspot.com/o/uploads%2F1683904745202.jpg?alt=media&amp;token=57b9f56d-c007-4a4f-a599-695de8782ff5\" alt=\"hihi\" width=\"150\" height=\"100\"><br>","https://firebasestorage.googleapis.com/v0/b/nodv-android.appspot.com/o/uploads%2F1683904745202.jpg?alt=media&amp;token=57b9f56d-c007-4a4f-a599-695de8782ff5",user1,2));
+
+        Gson gson = new Gson();
+        preferences = getSharedPreferences("postArr", Context.MODE_PRIVATE);
+        editor = preferences.edit();
+        String json = gson.toJson(postArr);
+        editor.putString("postArr", json);
+        editor.commit();
 
         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(intent);

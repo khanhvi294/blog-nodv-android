@@ -250,7 +250,7 @@ Button publish;
                 Data data = new Data();
                 Post newPost;
                 if (urlImage == null) {
-                    thumbnail = "https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1671427078388the-ky-1.jpg?alt=media&token=bb2c88cc-a368-4d28-9735-fe788f6bef6d";
+                    thumbnail = "https://firebasestorage.googleapis.com/v0/b/nodv-android.appspot.com/o/uploads%2F1683907897517.png?alt=media&token=a82df999-76fd-4548-b0fe-d476bf4850c3";
                 } else {
                     thumbnail = urlImage;
                 }
@@ -264,8 +264,9 @@ Button publish;
                     newPost = postEdit;
                 }
                 else{
-                    User user = new User("khanh vi", R.drawable.avatar);
+                    User user = data.getCurrentUser(getBaseContext());
                     newPost = new Post(title, content, thumbnail, user, 5);
+                    System.out.println(newPost.getContent());
                     data.addToPostList(getBaseContext() ,newPost);
                 }
                 Intent resultIntent = new Intent(getBaseContext(), PostDetailActivity.class);
@@ -338,6 +339,8 @@ Button publish;
                         @Override
                         public void onSuccess(Uri uri) {
                             String url = uri.toString();
+                            urlImage = url;
+
                             mEditor.insertImage(url, "hihi", 150, 100);
                         }
                     });

@@ -23,6 +23,7 @@ import com.khanhvi.nodv_android_app.MainActivity;
 import com.khanhvi.nodv_android_app.R;
 import com.khanhvi.nodv_android_app.adapter.PostAdapter;
 import com.khanhvi.nodv_android_app.model.Post;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
@@ -33,16 +34,12 @@ import jp.wasabeef.richeditor.RichEditor;
 
 public class PostDetailActivity extends AppCompatActivity {
     RichEditor richEditor;
-    TextView postTitle;
-
-
-    SharedPreferences preferences;
+    TextView postTitle,authorName;
     ImageView closeDetail;
     ArrayList<Post> postArr;
     Data data = new Data();
     Post post;
     int viTri;
-    PostAdapter postAdapter;
 
     ImageView menuMore;
 
@@ -58,6 +55,7 @@ public class PostDetailActivity extends AppCompatActivity {
         richEditor = findViewById(R.id.postContent);
         postTitle = findViewById(R.id.postTitle);
         closeDetail = findViewById(R.id.closeDetail);
+        authorName = findViewById(R.id.authorName);
         post = (Post) getIntent().getSerializableExtra("newPost");
         viTri = getIntent().getIntExtra("viTri",-1);
         menuMore = findViewById(R.id.menuMore);
@@ -68,6 +66,7 @@ public class PostDetailActivity extends AppCompatActivity {
         richEditor.setInputEnabled(false);
         richEditor.setHtml(post.getContent());
         postTitle.setText(post.getTitle());
+        authorName.setText(post.getUser().getUsername());
         closeDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
