@@ -244,8 +244,8 @@ Button publish;
             @Override
             public void onClick(View view) {
                 String inputString = mEditor.getHtml();
-
-                if( inputString == null || inputString.isEmpty() ){
+                System.out.println(inputString);
+                if( inputString == null || inputString.equals("<br>") ){
                     AlertDialog.Builder dialog = new AlertDialog.Builder(PostEditorActivity.this);
                     dialog.setTitle("Warning!!!");
                     dialog.setMessage("Content can't be empty");
