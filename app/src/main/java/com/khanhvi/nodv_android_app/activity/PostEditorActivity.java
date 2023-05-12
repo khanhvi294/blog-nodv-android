@@ -3,8 +3,10 @@ package com.khanhvi.nodv_android_app.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -86,7 +88,6 @@ Button publish;
             publish.setText("Update");
             postEdit = (Post)getIntent().getSerializableExtra("postEdit");
             viTri = getIntent().getIntExtra("viTri",-1);
-            System.out.println("nhan"+viTri);
             String content = postEdit.getTitle() + "<br>" +  postEdit.getContent();
             mEditor.setHtml(content);
         }
@@ -243,9 +244,34 @@ Button publish;
             @Override
             public void onClick(View view) {
                 String inputString = mEditor.getHtml();
+
+                if( inputString == null || inputString.isEmpty() ){
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(PostEditorActivity.this);
+                    dialog.setTitle("Warning!!!");
+                    dialog.setMessage("Content can't be empty");
+                    dialog.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            dialog.cancel();
+                            return;
+                        }
+
+                    });
+                    AlertDialog alertDialog = dialog.create();
+                    alertDialog.show();
+                    return;
+                }
+
                 String[] lines = inputString.split("<br>", 2);
+                System.out.println("okkkk");
                 String title = lines[0];
-                String content = lines[1];
+                String content;
+                if(lines.length>1){
+                 content = lines[1];
+                }else{
+                    content="";
+                }
+                System.out.println("okkk2");
                 String thumbnail;
                 Data data = new Data();
                 Post newPost;
@@ -260,7 +286,6 @@ Button publish;
                     postEdit.setContent(content);
                     postEdit.setThumbnail(thumbnail);
                     data.updatePost(getBaseContext(),viTri,postEdit);
-
                     newPost = postEdit;
                 }
                 else{
@@ -272,8 +297,6 @@ Button publish;
                 Intent resultIntent = new Intent(getBaseContext(), PostDetailActivity.class);
                 resultIntent.putExtra("newPost",newPost);
                 startActivity(resultIntent);
-
-
             }
         });
     }
