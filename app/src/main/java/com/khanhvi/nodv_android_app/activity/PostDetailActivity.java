@@ -23,6 +23,7 @@ import com.khanhvi.nodv_android_app.MainActivity;
 import com.khanhvi.nodv_android_app.R;
 import com.khanhvi.nodv_android_app.adapter.PostAdapter;
 import com.khanhvi.nodv_android_app.model.Post;
+import com.khanhvi.nodv_android_app.model.User;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.lang.reflect.Array;
@@ -123,7 +124,12 @@ public class PostDetailActivity extends AppCompatActivity {
                 }
             }
         });
-        popup.inflate(R.menu.menu);
+        User currentUser = data.getCurrentUser(getBaseContext());
+        if(currentUser.getId() == post.getUser().getId()){
+        popup.inflate(R.menu.menu);}
+        else {
+            popup.inflate(R.menu.menu_report);
+        }
         popup.show();
     }
 

@@ -26,6 +26,7 @@ import com.khanhvi.nodv_android_app.activity.HomeActivity;
 import com.khanhvi.nodv_android_app.activity.PostDetailActivity;
 import com.khanhvi.nodv_android_app.activity.PostEditorActivity;
 import com.khanhvi.nodv_android_app.model.Post;
+import com.khanhvi.nodv_android_app.model.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -156,7 +157,13 @@ public class PostAdapter extends ArrayAdapter {
                 }
             }
         });
-        popup.inflate(R.menu.menu);
+        Data data = new Data();
+        User currentUser = data.getCurrentUser(context);
+        if(currentUser.getId() == postList.get(viTri).getUser().getId()){
+            popup.inflate(R.menu.menu);}
+        else {
+            popup.inflate(R.menu.menu_report);
+        }
         popup.show();
     }
 }

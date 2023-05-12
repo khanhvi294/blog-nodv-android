@@ -350,7 +350,6 @@ Button publish;
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
         if (resultCode == RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
             String imagePath = getPathFromUri(this, selectedImage);
