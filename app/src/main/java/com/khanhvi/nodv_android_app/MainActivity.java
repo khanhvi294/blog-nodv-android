@@ -31,22 +31,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-        postArr = new ArrayList<>();
-
-        User user1 = new User("Khánh vi",R.drawable.avatar);
-        User user2 = new User("vi vi", R.drawable.avatar);
-        postArr.add(new Post("khanh vi 123","not","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user1,2));
-        postArr.add(new Post("khanh vi","not","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user2,2));
-        postArr.add(new Post("khanh vi","not","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user1,2));
-        postArr.add(new Post("khanh vi","not","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user2,2));
-        postArr.add(new Post("khanh vi","not","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user1,2));
-
-        Gson gson = new Gson();
-        preferences = getSharedPreferences("postArr", Context.MODE_PRIVATE);
-        editor = preferences.edit();
-        String json = gson.toJson(postArr);
-        editor.putString("postArr", json);
-        editor.commit();
+//        postArr = new ArrayList<>();
+//
+//        User user1 = new User("Khánh vi",R.drawable.avatar);
+//        User user2 = new User("vi vi", R.drawable.avatar);
+//        postArr.add(new Post("khanh vi 1","not1","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user1,2));
+//        postArr.add(new Post("khanh vi 2","not 2","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user2,2));
+//        postArr.add(new Post("khanh vi 3","not 3","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user1,2));
+//        postArr.add(new Post("khanh vi 4","not 4","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user2,2));
+//        postArr.add(new Post("khanh vi 5","not 5","https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba",user1,2));
+//
+//        Gson gson = new Gson();
+//        preferences = getSharedPreferences("postArr", Context.MODE_PRIVATE);
+//        editor = preferences.edit();
+//        String json = gson.toJson(postArr);
+//        editor.putString("postArr", json);
+//        editor.commit();
 
         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(intent);

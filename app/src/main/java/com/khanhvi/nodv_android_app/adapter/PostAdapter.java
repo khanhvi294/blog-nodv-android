@@ -21,7 +21,9 @@ import androidx.annotation.Nullable;
 
 import com.khanhvi.nodv_android_app.R;
 import com.khanhvi.nodv_android_app.activity.Data;
+import com.khanhvi.nodv_android_app.activity.HomeActivity;
 import com.khanhvi.nodv_android_app.activity.PostDetailActivity;
+import com.khanhvi.nodv_android_app.activity.PostEditorActivity;
 import com.khanhvi.nodv_android_app.model.Post;
 
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class PostAdapter extends ArrayAdapter {
     Context context;
     int resource;
     List<Post> postList;
+
 
 
 
@@ -64,6 +67,8 @@ public class PostAdapter extends ArrayAdapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, PostDetailActivity.class);
+                System.out.println("vitri"+position);
+                System.out.println("post"+post.getTitle());
                 intent.putExtra("newPost", post);
                 intent.putExtra("viTri",position);
                 context.startActivity(intent);
@@ -105,12 +110,18 @@ public class PostAdapter extends ArrayAdapter {
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
+                Data data = new Data();
                 switch (menuItem.getItemId()) {
                     case R.id.menu_item_edit:
+                        Intent intent = new Intent(context, PostEditorActivity.class);
+                        intent.putExtra("isEdit",true);
+                        intent.putExtra("viTri",viTri);
+                        intent.putExtra("postEdit", postList.get(viTri));
+                        context.startActivity(intent);
 
                         return true;
                     case R.id.menu_item_delete:
-                        Data data = new Data();
+
                         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
                         dialog.setTitle("Confirm");
                         dialog.setMessage("Are you sure delete post?");

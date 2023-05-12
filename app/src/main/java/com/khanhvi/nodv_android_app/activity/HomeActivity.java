@@ -34,7 +34,7 @@ public class HomeActivity extends AppCompatActivity {
     PostAdapter postAdapter;
     ArrayList<Post> postArr;
     FloatingActionButton fabCreate;
-
+    Data data;
 
     SharedPreferences preferences; //Create Object of SharedPreferences
     SharedPreferences.Editor editor;
@@ -47,6 +47,7 @@ public class HomeActivity extends AppCompatActivity {
         setEvent();
     }
     private void setControl() {
+        data = new Data();
         listview = (ListView) findViewById(R.id.postList);
         fabCreate = findViewById(R.id.fabCreate);
 
@@ -56,6 +57,7 @@ public class HomeActivity extends AppCompatActivity {
 
         preferences = getSharedPreferences("postArr", Context.MODE_PRIVATE);
         getPosts();
+//        postArr = data.getPostList(getBaseContext());
 
         postAdapter = new PostAdapter(this,R.layout.layout_post_item,postArr);
         listview.setAdapter(postAdapter);

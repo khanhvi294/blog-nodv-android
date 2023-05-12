@@ -62,4 +62,14 @@ public class Data {
         editor.putString("postArr", json);
         editor.commit();
     }
+    public void updatePost(Context context, int viTri, Post post) {
+        postArr = getPostList(context);
+        postArr.set(viTri,post);
+        Gson gson = new Gson();
+        String json;
+        editor = preferences.edit();
+        json = gson.toJson(postArr);
+        editor.putString("postArr", json);
+        editor.commit();
+    }
 }

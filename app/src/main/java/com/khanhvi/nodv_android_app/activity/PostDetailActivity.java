@@ -64,9 +64,7 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-        Data data = new Data();
-    postArr = data.getPostList(getBaseContext());
-
+        postArr = data.getPostList(getBaseContext());
         richEditor.setInputEnabled(false);
         richEditor.setHtml(post.getContent());
         postTitle.setText(post.getTitle());
@@ -93,7 +91,11 @@ public class PostDetailActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.menu_item_edit:
-
+                        Intent intent = new Intent(PostDetailActivity.this,PostEditorActivity.class);
+                        intent.putExtra("isEdit",true);
+                        intent.putExtra("viTri",viTri);
+                        intent.putExtra("postEdit", post);
+                        startActivity(intent);
                         return true;
                     case R.id.menu_item_delete:
                         AlertDialog.Builder dialog = new AlertDialog.Builder(PostDetailActivity.this);

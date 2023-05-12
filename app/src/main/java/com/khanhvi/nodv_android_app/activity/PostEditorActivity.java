@@ -36,13 +36,12 @@ import jp.wasabeef.richeditor.RichEditor;
 public class PostEditorActivity extends AppCompatActivity {
 
     private RichEditor mEditor;
-
-
     String urlImage;
-
     ActivityMainBinding binding;
     StorageReference storageReference;
-    FirebaseStorage firebaseStorage;
+    boolean isEdit = false;
+    Post postEdit;
+    int viTri = -1;
 
     ImageView action_undo,
             action_redo,
@@ -71,26 +70,26 @@ Button publish;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_editor);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-
         setControl();
         setEvent();
-
-
-
     }
 
     private void setEvent() {
         mEditor.setEditorHeight(200);
         mEditor.setEditorFontSize(22);
         mEditor.setEditorFontColor(Color.BLACK);
-        //mEditor.setEditorBackgroundColor(Color.BLUE);
-//        mEditor.setBackgroundColor(Color.BLUE);
-        //mEditor.setBackgroundResource(R.drawable.bg);
         mEditor.setPadding(10, 10, 10, 10);
-        //mEditor.setBackground("https://raw.githubusercontent.com/wasabeef/art/master/chip.jpg");
         mEditor.setPlaceholder("Write something...");
-        // mEditor.setInputEnabled(false);
+        isEdit = getIntent().getBooleanExtra("isEdit",false);
 
+        if(isEdit) {
+            publish.setText("Update");
+            postEdit = (Post)getIntent().getSerializableExtra("postEdit");
+            viTri = getIntent().getIntExtra("viTri",-1);
+            System.out.println("nhan"+viTri);
+            String content = postEdit.getTitle() + "<br>" +  postEdit.getContent();
+            mEditor.setHtml(content);
+        }
         mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
             @Override
             public void onTextChange(String text) {
@@ -244,25 +243,36 @@ Button publish;
             @Override
             public void onClick(View view) {
                 String inputString = mEditor.getHtml();
-
                 String[] lines = inputString.split("<br>", 2);
-
                 String title = lines[0];
                 String content = lines[1];
                 String thumbnail;
+                Data data = new Data();
+                Post newPost;
                 if (urlImage == null) {
                     thumbnail = "https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1671427078388the-ky-1.jpg?alt=media&token=bb2c88cc-a368-4d28-9735-fe788f6bef6d";
                 } else {
-                    thumbnail = "https://firebasestorage.googleapis.com/v0/b/blog-nodv.appspot.com/o/images%2F1677571804851amanitas_mushrooms_autumn_129262_4950x7421.jpg?alt=media&token=4e6d1d28-c17c-4411-957e-64bd273121ba";
+                    thumbnail = urlImage;
                 }
 
-                User user = new User("khanh vi", R.drawable.avatar);
-                Post newPost = new Post(title, content, thumbnail, user, 5);
-                Data data = new Data();
-                data.addToPostList(getBaseContext() ,newPost);
+                if(isEdit){
+                    postEdit.setTitle(title);
+                    postEdit.setContent(content);
+                    postEdit.setThumbnail(thumbnail);
+                    data.updatePost(getBaseContext(),viTri,postEdit);
+
+                    newPost = postEdit;
+                }
+                else{
+                    User user = new User("khanh vi", R.drawable.avatar);
+                    newPost = new Post(title, content, thumbnail, user, 5);
+                    data.addToPostList(getBaseContext() ,newPost);
+                }
                 Intent resultIntent = new Intent(getBaseContext(), PostDetailActivity.class);
                 resultIntent.putExtra("newPost",newPost);
                 startActivity(resultIntent);
+
+
             }
         });
     }
@@ -319,8 +329,6 @@ Button publish;
 
         if (resultCode == RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
-//            ImageView imageView = findViewById(R.id.imgViewT);
-//            imageView.setImageURI(selectedImage);
             String imagePath = getPathFromUri(this, selectedImage);
             storageReference = FirebaseStorage.getInstance().getReference().child("uploads").child(System.currentTimeMillis() + "." + getFileExtension(selectedImage));
             storageReference.putFile(selectedImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
